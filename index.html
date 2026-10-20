@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Оплата и анекдот</title>
+<style>
+  body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; text-align: center; }
+  .card { border: 1px solid #ddd; border-radius: 12px; padding: 24px; }
+  .phone { font-size: 24px; font-weight: bold; color: #2a7; }
+  button { padding: 12px 24px; font-size: 16px; border-radius: 8px; border: none; background: #2a7; color: #fff; cursor: pointer; }
+  .joke { margin-top: 20px; font-size: 18px; line-height: 1.5; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Оплатите 50 ₽</h2>
+  <p>Перевод на номер:</p>
+  <p class="phone">8 901 152-70-70</p>
+  <p><small>После оплаты нажмите кнопку ниже</small></p>
+  <button onclick="showJoke()">Я оплатил</button>
+  <div id="joke" class="joke hidden"></div>
+</div>
+
+<script>
+async function showJoke() {
+  const el = document.getElementById('joke');
+  el.classList.remove('hidden');
+  el.textContent = 'Загружаем анекдот...';
+  try {
+    const res = await fetch('https://official-joke-api.appspot.com/random_joke');
+    const data = await res.json();
+    el.innerHTML = `<b>${data.setup}</b><br><br>${data.punchline}`;
+  } catch (e) {
+    el.textContent = 'Не удалось загрузить анекдот 😔';
+  }
+}
+</script>
+</body>
+</html>
