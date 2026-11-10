@@ -33,15 +33,16 @@ async function showJoke() {
     const res = await fetch('https://v2.jokeapi.dev/joke/Any?lang=ru&blacklistFlags=nsfw,religious,political,racist,sexist,explicit');
     const data = await res.json();
     
-    if (data.type === 'twopart') {
+    if (data.type === 'twopart' && data.setup && data.delivery) {
       el.innerHTML = `<b>${data.setup}</b><br><br>${data.delivery}`;
-    } else {
+    } else if (data.joke) {
       el.innerHTML = `<b>${data.joke}</b>`;
+    } else {
+      // Если пришел пустой ответ, показываем запасной анекдот
+      el.innerHTML = `<b>— Почему программисты путают Хэллоуин и Рождество?</b><br><br>Потому что OCT 31 == DEC 25.</b>`;
     }
   } catch (e) {
-    el.textContent = 'Ошибка сети. Попробуйте нажать кнопку еще раз.';
+    el.innerHTML = `<b>— Что сказал один сервер другому?</b><br><br>Ты сегодня какой-то неотзывчивый.</b>`;
   }
 }
 </script>
-</body>
-</html>
